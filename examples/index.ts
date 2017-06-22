@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
     <div
       ng2-carouselamos
       [width]="500"
-      [$prev]="'<img src=\'assets/img/prev.png\'>'"
-      [$next]="'<img src=\'assets/img/next.png\'>'"
+      [$prev]="$prev"
+      [$next]="$next"
     >
       <div class="box red">
       </div>
@@ -26,6 +26,13 @@ import { Component } from '@angular/core';
       <div class="box pink">
       </div>
     </div>
+
+    <ng-template #$prev>
+      <img src="assets/img/prev.png" />
+    </ng-template>
+    <ng-template #$next>
+      <img src="assets/img/next.png" />
+    </ng-template>
     `,
 })
 export class AppComponent {

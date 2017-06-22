@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';  
-import { NgModule, Component, ViewChild, AfterViewInit, Input } from '@angular/core';
+import {
+  NgModule,
+  Component,
+  ViewChild,
+  AfterViewInit,
+  Input,
+  ContentChild,
+  TemplateRef
+} from '@angular/core';
 
 @Component({
     selector: '[ng2-carouselamos]',
@@ -15,7 +23,7 @@ import { NgModule, Component, ViewChild, AfterViewInit, Input } from '@angular/c
         }
         .ng2-carouselamos {
           display: flex;
-          transition: transform 1s;
+          -webkit-transition: -webkit-transform 1s;
         }
         .controls {
           position: absolute;
@@ -38,8 +46,12 @@ import { NgModule, Component, ViewChild, AfterViewInit, Input } from '@angular/c
           </div>
         </div>
         <div class="controls" *ngIf="$prev || $next">
-          <button *ngIf="$prev" (click)="scroll(false)" [disabled]="amount >= 0" [innerHTML]="$prev"></button>
-          <button *ngIf="$next" (click)="scroll(true)" [disabled]="amount <= -maxWidth" [innerHTML]="$next"></button>
+          <button *ngIf="$prev" (click)="scroll(false)" [disabled]="amount >= 0">
+            <ng-template [ngTemplateOutlet]="$prev"></ng-template>
+          </button>
+          <button *ngIf="$next" (click)="scroll(true)" [disabled]="amount <= -maxWidth">
+            <ng-template [ngTemplateOutlet]="$next"></ng-template>
+          </button>
         </div>
       </div>
     `
