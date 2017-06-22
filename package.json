@@ -2,7 +2,7 @@
   "name": "ng2-carouselamos",
   "version": "1.0.2",
   "description": "This is a simple slider/carousel for angular 2",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +27,8 @@
   "homepage": "https://github.com/joselcvarela/ng2-carouselamos#readme",
   "dependencies": {
     "@angular/common": "^4.2.4",
-    "@angular/core": "^4.2.4"
+    "@angular/core": "^4.2.4",
+    "rxjs": "^5.4.1",
+    "zone.js": "^0.8.12"
   }
 }
