@@ -1,0 +1,32 @@
+{
+  "name": "ng2-carouselamos",
+  "version": "1.0.0",
+  "description": "This is a simple slider/carousel for angular 2",
+  "main": "ng2-carouselamos.module.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/joselcvarela/ng2-carouselamos.git"
+  },
+  "keywords": [
+    "slider",
+    "carousel",
+    "angular2",
+    "angular",
+    "2",
+    "ng2",
+    "carouselamos"
+  ],
+  "author": "José Varela",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joselcvarela/ng2-carouselamos/issues"
+  },
+  "homepage": "https://github.com/joselcvarela/ng2-carouselamos#readme",
+  "dependencies": {
+    "@angular/common": "^4.2.4",
+    "@angular/core": "^4.2.4"
+  }
+}

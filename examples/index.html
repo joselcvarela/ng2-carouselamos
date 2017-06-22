@@ -1,0 +1,32 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app',
+  templateUrl: `
+    <div
+      ng2-carouselamos
+      [width]="500"
+      [$prev]="'<img src=\'assets/img/prev.png\'>'"
+      [$next]="'<img src=\'assets/img/next.png\'>'"
+    >
+      <div class="box red">
+      </div>
+      <div class="box green">
+      </div>
+      <div class="box blue">
+      </div>
+      <div class="box pink">
+      </div>
+        <div class="box red">
+      </div>
+      <div class="box green">
+      </div>
+      <div class="box blue">
+      </div>
+      <div class="box pink">
+      </div>
+    </div>
+    `,
+})
+export class AppComponent {
+}
