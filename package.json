@@ -2,7 +2,7 @@
   "name": "ng2-carouselamos",
   "version": "1.0.1",
   "description": "This is a simple slider/carousel for angular 2",
-  "main": "ng2-carouselamos.module.ts",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
