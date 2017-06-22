@@ -30,5 +30,8 @@
     "@angular/core": "^4.2.4",
     "rxjs": "^5.4.1",
     "zone.js": "^0.8.12"
+  },
+  "devDependencies": {
+    "typings": "^2.1.1"
   }
 }
