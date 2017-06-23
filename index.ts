@@ -61,13 +61,14 @@ export class Ng2Carouselamos implements AfterViewInit {
   @Input() width = 500;
   @Input() $prev;
   @Input() $next;
-  maxWidth: number;
+  @Input() maxWidth: number = 0;
   childIndex: number = 0;
   amount: number = 0;
 
   ngAfterViewInit() {
     const $ng2Carouselamos: HTMLElement = this.ng2Carouselamos.nativeElement;
-    this.maxWidth = Array.prototype.slice.call($ng2Carouselamos.children).map(c => c.clientWidth).reduce((prev, curr) => (prev + curr));
+    if (!this.maxWidth)
+      this.maxWidth = Array.prototype.slice.call($ng2Carouselamos.children).map(c => c.clientWidth).reduce((prev, curr) => (prev + curr));
   }
 
   scroll(forward) {

@@ -12,12 +12,14 @@ import { NgModule, Component, ViewChild, Input } from '@angular/core';
 var Ng2Carouselamos = (function () {
     function Ng2Carouselamos() {
         this.width = 500;
+        this.maxWidth = 0;
         this.childIndex = 0;
         this.amount = 0;
     }
     Ng2Carouselamos.prototype.ngAfterViewInit = function () {
         var $ng2Carouselamos = this.ng2Carouselamos.nativeElement;
-        this.maxWidth = Array.prototype.slice.call($ng2Carouselamos.children).map(function (c) { return c.clientWidth; }).reduce(function (prev, curr) { return (prev + curr); });
+        if (!this.maxWidth)
+            this.maxWidth = Array.prototype.slice.call($ng2Carouselamos.children).map(function (c) { return c.clientWidth; }).reduce(function (prev, curr) { return (prev + curr); });
     };
     Ng2Carouselamos.prototype.scroll = function (forward) {
         var $child = this.ng2Carouselamos.nativeElement.children[this.childIndex];
@@ -50,6 +52,10 @@ __decorate([
     Input(),
     __metadata("design:type", Object)
 ], Ng2Carouselamos.prototype, "$next", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Number)
+], Ng2Carouselamos.prototype, "maxWidth", void 0);
 Ng2Carouselamos = __decorate([
     Component({
         selector: '[ng2-carouselamos]',
