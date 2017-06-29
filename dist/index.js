@@ -8,36 +8,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { CommonModule } from '@angular/common';
-import { NgModule, Component, ViewChild, Input } from '@angular/core';
+import { NgModule, Component, Input, } from '@angular/core';
+import isEqual from 'lodash.isequal';
 var Ng2Carouselamos = (function () {
     function Ng2Carouselamos() {
+        this.items = [];
         this.width = 500;
         this.childIndex = 0;
         this.amount = 0;
     }
-    Ng2Carouselamos.prototype.ngAfterViewInit = function () {
-        var $ng2Carouselamos = this.ng2Carouselamos.nativeElement;
-        this.maxWidth = Array.prototype.slice.call($ng2Carouselamos.children).map(function (c) { return c.clientWidth; }).reduce(function (prev, curr) { return (prev + curr); });
-    };
-    Ng2Carouselamos.prototype.scroll = function (forward) {
-        var $child = this.ng2Carouselamos.nativeElement.children[this.childIndex];
-        var nChilds = this.ng2Carouselamos.nativeElement.children.length;
+    Ng2Carouselamos.prototype.scroll = function (forward, elem) {
         if (forward) {
-            this.amount -= $child.clientWidth;
-            this.childIndex = (this.childIndex + 1) % nChilds;
+            this.amount -= elem.children[this.childIndex].clientWidth;
+            this.childIndex += 1;
         }
         else {
-            this.amount += $child.clientWidth;
-            this.childIndex = Math.abs((this.childIndex - 1) % nChilds);
+            this.childIndex -= 1;
+            this.amount += elem.children[this.childIndex].clientWidth;
         }
-        this.ng2Carouselamos.nativeElement.style.webkitTransform = "translateX(" + this.amount + "px)";
+    };
+    Ng2Carouselamos.prototype.ngOnChanges = function (changes) {
+        if (changes.items && !isEqual(changes.items.previousValue, changes.items.currentValue)) {
+            this.amount = 0;
+        }
     };
     return Ng2Carouselamos;
 }());
 __decorate([
-    ViewChild('ng2Carouselamos'),
+    Input(),
     __metadata("design:type", Object)
-], Ng2Carouselamos.prototype, "ng2Carouselamos", void 0);
+], Ng2Carouselamos.prototype, "items", void 0);
 __decorate([
     Input(),
     __metadata("design:type", Object)
@@ -50,11 +50,23 @@ __decorate([
     Input(),
     __metadata("design:type", Object)
 ], Ng2Carouselamos.prototype, "$next", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Object)
+], Ng2Carouselamos.prototype, "$item", void 0);
 Ng2Carouselamos = __decorate([
     Component({
         selector: '[ng2-carouselamos]',
-        template: "\n      <style>\n        .ng2-carouselamos-container {\n          position: relative;\n          display: flex;\n          justify-content: center;\n        }\n        .ng2-carouselamos-wrapper {\n          overflow: hidden;\n        }\n        .ng2-carouselamos {\n          display: flex;\n          -webkit-transition: -webkit-transform 1s;\n        }\n        .controls {\n          position: absolute;\n          display: flex;\n          width: 100%;\n          justify-content: space-between;\n          top: 50%;\n          left: 0;\n          transform: translateY(-50%);\n        }\n        .controls button{\n          background: transparent;\n          border: 0;\n        }\n      </style>\n      <div class=\"ng2-carouselamos-container\">\n        <div class=\"ng2-carouselamos-wrapper\" [style.width]=\"width + 'px'\">\n          <div class=\"ng2-carouselamos\" #ng2Carouselamos>\n            <ng-content></ng-content>\n          </div>\n        </div>\n        <div class=\"controls\" *ngIf=\"$prev || $next\">\n          <button *ngIf=\"$prev\" (click)=\"scroll(false)\" [disabled]=\"amount >= 0\">\n            <ng-template [ngTemplateOutlet]=\"$prev\"></ng-template>\n          </button>\n          <button *ngIf=\"$next\" (click)=\"scroll(true)\" [disabled]=\"amount <= -maxWidth\">\n            <ng-template [ngTemplateOutlet]=\"$next\"></ng-template>\n          </button>\n        </div>\n      </div>\n    "
+        template: "\n      <style>\n        .ng2-carouselamos-container {\n          position: relative;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-pack: center;\n          -ms-flex-pack: center;\n          justify-content: center;\n        }\n        .ng2-carouselamos-wrapper {\n          overflow: hidden;\n        }\n        .ng2-carouselamos {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-transition: -webkit-transform 1s;\n          transition: -webkit-transform 1s;\n          transition: transform 1s;\n          transition: transform 1s, -webkit-transform 1s;\n        }\n        .controls {\n          position: absolute;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          width: 100%;\n          -webkit-box-pack: justify;\n          -ms-flex-pack: justify;\n          justify-content: space-between;\n          top: 50%;\n          left: 0;\n          -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n        }\n        .controls button{\n          background: transparent;\n          border: 0;\n        }\n      </style>\n      <div class=\"ng2-carouselamos-container\">\n        <div class=\"ng2-carouselamos-wrapper\" [style.width]=\"width + 'px'\">\n          <div\n            class=\"ng2-carouselamos\"\n            [style.transform]=\"'translateX('+amount+'px)'\"\n            [style.webkitTransform]=\"'translateX('+amount+'px)'\"\n            #list\n          >\n            <ng-template\n              *ngFor=\"let item of items; let i = index\"\n              [ngTemplateOutlet]=\"$item\"\n              [ngTemplateOutletContext]=\"{$implicit: item, index: i}\"\n            ></ng-template>\n          </div>\n        </div>\n        <div class=\"controls\" *ngIf=\"$prev || $next\">\n          <button *ngIf=\"$prev\" (click)=\"scroll(false, list)\" [disabled]=\"childIndex <= 0\">\n            <ng-template [ngTemplateOutlet]=\"$prev\"></ng-template>\n          </button>\n          <button *ngIf=\"$next\" (click)=\"scroll(true, list)\" [disabled]=\"childIndex >= items.length - 1\">\n            <ng-template [ngTemplateOutlet]=\"$next\"></ng-template>\n          </button>\n        </div>\n      </div>\n    "
     })
+    /*
+      *
+      * @param() items - List of items to belong in carousel
+      * @param() width - Size of window(view) to show
+      * @param() $prev - Template for previous button
+      * @param() $next - Template for next button
+      * @param() $item - Template for the item
+    */
 ], Ng2Carouselamos);
 export { Ng2Carouselamos };
 var Ng2CarouselamosModule = (function () {
