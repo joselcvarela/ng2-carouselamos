@@ -2,6 +2,9 @@
 
 Ng2-carouselamos is a simple carousel/slider which just use css transitions to do the work
 
+### Demo
+![Demo](2017-06-29_18-02-13.gif)
+
 ### Getting started
 - Install node package:
 ```
