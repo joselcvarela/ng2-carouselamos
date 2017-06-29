@@ -2,7 +2,7 @@
 
 Ng2-carouselamos is a simple carousel/slider which just use css transitions to do the work
 
-###Getting started
+### Getting started
 - Install node package:
 ```
 npm i ng2-carouselamos --save
@@ -10,6 +10,7 @@ npm i ng2-carouselamos --save
 
 And then, in your app.module.ts :
 ```
+import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 ...
 @NgModule({
   ...
@@ -19,5 +20,27 @@ And then, in your app.module.ts :
   ],
   ...
 })
+```
+
+### Implementing
+```html
+<div
+  ng2-carouselamos
+  [width]="500"
+  [items]="listOfItems"
+  [$item]="itemTemplate"
+  [$prev]="prevTemplate"
+  [$next]="nextTemplate"
+></div>
+
+<ng-template #prevTemplate>
+  <img src="prev.png" />
+</ng-template>
+<ng-template #nextTemplate>
+  <img src="next.png" />
+</ng-template>
+<ng-template let-item let-i="index" #itemTemplate>
+  {{i}}. {{item.name}}
+</ng-template>
 ```
 
