@@ -3,6 +3,7 @@ import {
   NgModule,
   Component,
   Input,
+  HostListener,
 } from '@angular/core';
 import isEqual from 'lodash.isequal';
 
@@ -50,10 +51,24 @@ import isEqual from 'lodash.isequal';
           border: 0;
         }
       </style>
-      <div class="ng2-carouselamos-container">
-        <div class="ng2-carouselamos-wrapper" [style.width]="width + 'px'">
+      <div
+        class="ng2-carouselamos-container"
+        (mousedown)="onMousedown($event)"
+        (touchstart)="onTouchstart($event)"
+        (mousemove)="onMousemove($event, list.scrollWidth)"
+        (touchmove)="onTouchmove($event, list.scrollWidth)"
+        (mouseup)="onMouseup($event)"
+        (mouseleave)="onMouseup($event)"
+        (touchend)="onTouchend($event)"
+      >
+        <div
+          class="ng2-carouselamos-wrapper"
+          [style.width]="width + 'px'"
+        >
           <div
             class="ng2-carouselamos"
+            [style.transition]="startPress > 0 ? 'none' : 'transform 1s'"
+            [style.webkitTransition]="startPress >= 0 ? 'none' : 'transform 1s'"
             [style.transform]="'translateX('+amount+'px)'"
             [style.webkitTransform]="'translateX('+amount+'px)'"
             #list
@@ -92,15 +107,54 @@ export class Ng2Carouselamos {
   @Input() $item;
   childIndex: number = 0;
   amount: number = 0;
+  startPress: number = 0;
+  lastX: number = 0;
+
+  onMousedown(e: MouseEvent) {
+    if (e.which === 1) {
+      this.startPress = e.clientX;
+      this.lastX = this.amount;
+    }
+  }
+  onTouchdown(e: TouchEvent) {
+    this.startPress = e.targetTouches[0].clientX;
+    this.lastX = this.amount;
+  }
+  
+  onMousemove(e: MouseEvent, maxWidth: number) {
+    if (e.which === 1) {
+      const amount = this.lastX - (this.startPress - e.clientX);
+      if (amount > 0 || amount < -(maxWidth-this.width)) return;
+      this.amount = amount;
+    }
+  }
+  onTouchmove(e: TouchEvent, maxWidth: number) {
+    const amount = this.lastX - (this.startPress - e.targetTouches[0].clientX);
+    if (amount > 0 || amount < -(maxWidth-this.width)) return;
+    this.amount = amount;
+  }
+
+  onMouseup(e: MouseEvent) {
+    if (e.which === 1) {
+      this.startPress = 0;
+    }
+  }
+  
+  onTouchup(e: TouchEvent) {
+    this.startPress = 0;
+  }
 
   scroll(forward, elem) {
-    if (forward) {
-      this.amount -= elem.children[this.childIndex].clientWidth;
-      this.childIndex += 1;
-    } else {
-      this.childIndex -= 1;
-      this.amount += elem.children[this.childIndex].clientWidth;
+    this.childIndex += forward ? 1 : -1;
+    this.amount = -(this.calcScroll(elem));
+  }
+
+  calcScroll(elem) {
+    let counter = 0;
+    for (let i = this.childIndex-1; i >= 0; i--) {
+      counter += elem.children[i].clientWidth;
     }
+    return counter;
   }
 
   ngOnChanges(changes) {
