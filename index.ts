@@ -3,7 +3,6 @@ import {
   NgModule,
   Component,
   Input,
-  HostListener,
 } from '@angular/core';
 import isEqual from 'lodash.isequal';
 
@@ -27,9 +26,6 @@ import isEqual from 'lodash.isequal';
           display: -webkit-box;
           display: -ms-flexbox;
           display: flex;
-          -webkit-transition: -webkit-transform 1s;
-          transition: -webkit-transform 1s;
-          transition: transform 1s;
           transition: transform 1s, -webkit-transform 1s;
         }
         .controls {
@@ -51,24 +47,23 @@ import isEqual from 'lodash.isequal';
           border: 0;
         }
       </style>
-      <div
-        class="ng2-carouselamos-container"
-        (mousedown)="onMousedown($event)"
-        (touchstart)="onTouchstart($event)"
-        (mousemove)="onMousemove($event, list.scrollWidth)"
-        (touchmove)="onTouchmove($event, list.scrollWidth)"
-        (mouseup)="onMouseup($event)"
-        (mouseleave)="onMouseup($event)"
-        (touchend)="onTouchend($event)"
-      >
+      <div class="ng2-carouselamos-container">
         <div
           class="ng2-carouselamos-wrapper"
           [style.width]="width + 'px'"
+          (mousedown)="onMousedown($event)"
+          (touchstart)="onTouchdown($event)"
+          (mousemove)="onMousemove($event, list.scrollWidth)"
+          (touchmove)="onTouchmove($event, list.scrollWidth)"
+          (mouseup)="onMouseup($event)"
+          (mouseleave)="onMouseup($event)"
+          (touchend)="onTouchup($event)"
         >
           <div
             class="ng2-carouselamos"
-            [style.transition]="startPress > 0 ? 'none' : 'transform 1s'"
-            [style.webkitTransition]="startPress >= 0 ? 'none' : 'transform 1s'"
+            [attr.startPress]="startPress"
+            [style.transition]="startPress > 0 ? 'none' : '-webkit-transform 1s'"
+            [style.webkitTransition]="startPress > 0 ? 'none' : '-webkit-transform 1s'"
             [style.transform]="'translateX('+amount+'px)'"
             [style.webkitTransform]="'translateX('+amount+'px)'"
             #list
@@ -81,10 +76,10 @@ import isEqual from 'lodash.isequal';
           </div>
         </div>
         <div class="controls" *ngIf="$prev || $next">
-          <button *ngIf="$prev" (click)="scroll(false, list)" [disabled]="childIndex <= 0">
+          <button *ngIf="$prev" (click)="scroll(false, list)" [disabled]="amount >= 0">
             <ng-template [ngTemplateOutlet]="$prev"></ng-template>
           </button>
-          <button *ngIf="$next" (click)="scroll(true, list)" [disabled]="childIndex >= items.length - 1">
+          <button *ngIf="$next" (click)="scroll(true, list)" [disabled]="amount <= -(list.scrollWidth-width)">
             <ng-template [ngTemplateOutlet]="$next"></ng-template>
           </button>
         </div>
@@ -117,6 +112,7 @@ export class Ng2Carouselamos {
     }
   }
   onTouchdown(e: TouchEvent) {
+    if (navigator.userAgent.indexOf('Android') >= 0) e.preventDefault();
     this.startPress = e.targetTouches[0].clientX;
     this.lastX = this.amount;
   }
@@ -129,6 +125,7 @@ export class Ng2Carouselamos {
     }
   }
   onTouchmove(e: TouchEvent, maxWidth: number) {
+    if (navigator.userAgent.indexOf('Android') >= 0) e.preventDefault();
     const amount = this.lastX - (this.startPress - e.targetTouches[0].clientX);
     if (amount > 0 || amount < -(maxWidth-this.width)) return;
     this.amount = amount;
@@ -141,6 +138,7 @@ export class Ng2Carouselamos {
   }
   
   onTouchup(e: TouchEvent) {
+    if (navigator.userAgent.indexOf('Android') >= 0) e.preventDefault();
     this.startPress = 0;
   }
 
@@ -165,8 +163,8 @@ export class Ng2Carouselamos {
 }
 
 @NgModule({
-    imports: [CommonModule],
-    exports: [Ng2Carouselamos],
-    declarations: [Ng2Carouselamos]
+  imports: [CommonModule],
+  exports: [Ng2Carouselamos],
+  declarations: [Ng2Carouselamos]
 })
 export class Ng2CarouselamosModule { }
