@@ -29,6 +29,7 @@ import isEqual from 'lodash.isequal';
           transition: transform 1s, -webkit-transform 1s;
         }
         .controls {
+          pointer-events: none;
           position: absolute;
           display: -webkit-box;
           display: -ms-flexbox;
@@ -43,6 +44,7 @@ import isEqual from 'lodash.isequal';
           transform: translateY(-50%);
         }
         .controls button{
+          pointer-events: all;
           background: transparent;
           border: 0;
         }
@@ -55,9 +57,9 @@ import isEqual from 'lodash.isequal';
           (touchstart)="onTouchdown($event)"
           (mousemove)="onMousemove($event, list.scrollWidth)"
           (touchmove)="onTouchmove($event, list.scrollWidth)"
-          (mouseup)="onMouseup($event)"
+          (mouseup)="onMouseup($event, list)"
           (mouseleave)="onMouseup($event)"
-          (touchend)="onTouchup($event)"
+          (touchend)="onTouchup($event, list)"
         >
           <div
             class="ng2-carouselamos"
@@ -131,15 +133,34 @@ export class Ng2Carouselamos {
     this.amount = amount;
   }
 
-  onMouseup(e: MouseEvent) {
+  onMouseup(e: MouseEvent, elem) {
     if (e.which === 1) {
       this.startPress = 0;
+      this.snap(elem);
     }
   }
   
-  onTouchup(e: TouchEvent) {
+  onTouchup(e: TouchEvent, elem) {
     if (navigator.userAgent.indexOf('Android') >= 0) e.preventDefault();
     this.startPress = 0;
+    this.snap(elem);
+  }
+
+  snap(elem) {
+    let counter = 0;
+    let lastVal = 0;
+    for (let i = 0; i < this.items.length; i++) {
+      const el = elem.children[i];
+      const style = el.currentStyle || window.getComputedStyle(el);
+      counter += el.offsetWidth + (parseFloat(style.marginLeft) + parseFloat(style.marginRight));
+      if (this.amount <= lastVal && this.amount >= -counter ){
+        this.amount = -lastVal;
+        this.childIndex = i;
+        return;
+      }
+      lastVal = counter;
+    }
+    return counter;
   }
 
   scroll(forward, elem) {
