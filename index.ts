@@ -150,7 +150,9 @@ export class Ng2Carouselamos {
   calcScroll(elem) {
     let counter = 0;
     for (let i = this.childIndex-1; i >= 0; i--) {
-      counter += elem.children[i].clientWidth;
+      const el = elem.children[i];
+      const style = el.currentStyle || window.getComputedStyle(el);
+      counter += el.offsetWidth + (parseFloat(style.marginLeft) + parseFloat(style.marginRight));
     }
     return counter;
   }
