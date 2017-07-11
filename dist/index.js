@@ -46,15 +46,33 @@ var Ng2Carouselamos = (function () {
             return;
         this.amount = amount;
     };
-    Ng2Carouselamos.prototype.onMouseup = function (e) {
+    Ng2Carouselamos.prototype.onMouseup = function (e, elem) {
         if (e.which === 1) {
             this.startPress = 0;
+            this.snap(elem);
         }
     };
-    Ng2Carouselamos.prototype.onTouchup = function (e) {
+    Ng2Carouselamos.prototype.onTouchup = function (e, elem) {
         if (navigator.userAgent.indexOf('Android') >= 0)
             e.preventDefault();
         this.startPress = 0;
+        this.snap(elem);
+    };
+    Ng2Carouselamos.prototype.snap = function (elem) {
+        var counter = 0;
+        var lastVal = 0;
+        for (var i = 0; i < this.items.length; i++) {
+            var el = elem.children[i];
+            var style = el.currentStyle || window.getComputedStyle(el);
+            counter += el.offsetWidth + (parseFloat(style.marginLeft) + parseFloat(style.marginRight));
+            if (this.amount <= lastVal && this.amount >= -counter) {
+                this.amount = -lastVal;
+                this.childIndex = i;
+                return;
+            }
+            lastVal = counter;
+        }
+        return counter;
     };
     Ng2Carouselamos.prototype.scroll = function (forward, elem) {
         this.childIndex += forward ? 1 : -1;
@@ -80,7 +98,7 @@ export { Ng2Carouselamos };
 Ng2Carouselamos.decorators = [
     { type: Component, args: [{
                 selector: '[ng2-carouselamos]',
-                template: "\n      <style>\n        .ng2-carouselamos-container {\n          position: relative;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-pack: center;\n          -ms-flex-pack: center;\n          justify-content: center;\n        }\n        .ng2-carouselamos-wrapper {\n          overflow: hidden;\n        }\n        .ng2-carouselamos {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          transition: transform 1s, -webkit-transform 1s;\n        }\n        .controls {\n          position: absolute;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          width: 100%;\n          -webkit-box-pack: justify;\n          -ms-flex-pack: justify;\n          justify-content: space-between;\n          top: 50%;\n          left: 0;\n          -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n        }\n        .controls button{\n          background: transparent;\n          border: 0;\n        }\n      </style>\n      <div class=\"ng2-carouselamos-container\">\n        <div\n          class=\"ng2-carouselamos-wrapper\"\n          [style.width]=\"width + 'px'\"\n          (mousedown)=\"onMousedown($event)\"\n          (touchstart)=\"onTouchdown($event)\"\n          (mousemove)=\"onMousemove($event, list.scrollWidth)\"\n          (touchmove)=\"onTouchmove($event, list.scrollWidth)\"\n          (mouseup)=\"onMouseup($event)\"\n          (mouseleave)=\"onMouseup($event)\"\n          (touchend)=\"onTouchup($event)\"\n        >\n          <div\n            class=\"ng2-carouselamos\"\n            [attr.startPress]=\"startPress\"\n            [style.transition]=\"startPress > 0 ? 'none' : '-webkit-transform 1s'\"\n            [style.webkitTransition]=\"startPress > 0 ? 'none' : '-webkit-transform 1s'\"\n            [style.transform]=\"'translateX('+amount+'px)'\"\n            [style.webkitTransform]=\"'translateX('+amount+'px)'\"\n            #list\n          >\n            <ng-template\n              *ngFor=\"let item of items; let i = index\"\n              [ngTemplateOutlet]=\"$item\"\n              [ngTemplateOutletContext]=\"{$implicit: item, index: i, selectedIndex: childIndex}\"\n            ></ng-template>\n          </div>\n        </div>\n        <div class=\"controls\" *ngIf=\"$prev || $next\">\n          <button *ngIf=\"$prev\" (click)=\"scroll(false, list)\" [disabled]=\"amount >= 0\">\n            <ng-template [ngTemplateOutlet]=\"$prev\"></ng-template>\n          </button>\n          <button *ngIf=\"$next\" (click)=\"scroll(true, list)\" [disabled]=\"amount <= -(list.scrollWidth-width)\">\n            <ng-template [ngTemplateOutlet]=\"$next\"></ng-template>\n          </button>\n        </div>\n      </div>\n    "
+                template: "\n      <style>\n        .ng2-carouselamos-container {\n          position: relative;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-pack: center;\n          -ms-flex-pack: center;\n          justify-content: center;\n        }\n        .ng2-carouselamos-wrapper {\n          overflow: hidden;\n        }\n        .ng2-carouselamos {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          transition: transform 1s, -webkit-transform 1s;\n        }\n        .controls {\n          pointer-events: none;\n          position: absolute;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          width: 100%;\n          -webkit-box-pack: justify;\n          -ms-flex-pack: justify;\n          justify-content: space-between;\n          top: 50%;\n          left: 0;\n          -webkit-transform: translateY(-50%);\n          transform: translateY(-50%);\n        }\n        .controls button{\n          pointer-events: all;\n          background: transparent;\n          border: 0;\n        }\n      </style>\n      <div class=\"ng2-carouselamos-container\">\n        <div\n          class=\"ng2-carouselamos-wrapper\"\n          [style.width]=\"width + 'px'\"\n          (mousedown)=\"onMousedown($event)\"\n          (touchstart)=\"onTouchdown($event)\"\n          (mousemove)=\"onMousemove($event, list.scrollWidth)\"\n          (touchmove)=\"onTouchmove($event, list.scrollWidth)\"\n          (mouseup)=\"onMouseup($event, list)\"\n          (mouseleave)=\"onMouseup($event)\"\n          (touchend)=\"onTouchup($event, list)\"\n        >\n          <div\n            class=\"ng2-carouselamos\"\n            [attr.startPress]=\"startPress\"\n            [style.transition]=\"startPress > 0 ? 'none' : '-webkit-transform 1s'\"\n            [style.webkitTransition]=\"startPress > 0 ? 'none' : '-webkit-transform 1s'\"\n            [style.transform]=\"'translateX('+amount+'px)'\"\n            [style.webkitTransform]=\"'translateX('+amount+'px)'\"\n            #list\n          >\n            <ng-template\n              *ngFor=\"let item of items; let i = index\"\n              [ngTemplateOutlet]=\"$item\"\n              [ngTemplateOutletContext]=\"{$implicit: item, index: i, selectedIndex: childIndex}\"\n            ></ng-template>\n          </div>\n        </div>\n        <div class=\"controls\" *ngIf=\"$prev || $next\">\n          <button *ngIf=\"$prev\" (click)=\"scroll(false, list)\" [disabled]=\"amount >= 0\">\n            <ng-template [ngTemplateOutlet]=\"$prev\"></ng-template>\n          </button>\n          <button *ngIf=\"$next\" (click)=\"scroll(true, list)\" [disabled]=\"amount <= -(list.scrollWidth-width)\">\n            <ng-template [ngTemplateOutlet]=\"$next\"></ng-template>\n          </button>\n        </div>\n      </div>\n    "
             },] },
 ];
 /** @nocollapse */
