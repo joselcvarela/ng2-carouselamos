@@ -71,7 +71,7 @@ import isEqual from 'lodash.isequal';
             <ng-template
               *ngFor="let item of items; let i = index"
               [ngTemplateOutlet]="$item"
-              [ngTemplateOutletContext]="{$implicit: item, index: i}"
+              [ngTemplateOutletContext]="{$implicit: item, index: i, selectedIndex: childIndex}"
             ></ng-template>
           </div>
         </div>

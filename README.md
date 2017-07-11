@@ -25,6 +25,30 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 })
 ```
 
+### Documentation
+  ```ng2-carouselamos``` - attribute to apply carousel
+
+  ```width``` - size of window to show
+
+  ```items``` - objects array that belong to the carousel
+
+  ```$item``` - template for each item
+
+  ```$prev``` - template for previous button
+
+  ```$next``` - template for next button
+
+
+  Inside ```$item``` template we have access to the follow:
+
+  * ```let-item``` - the current element of the objects array
+
+  * ```let-i="index"``` - current index
+
+  * ```let-selected="selectedIndex"``` - current selected index (corresponds to the index of first visible element of the window)
+  
+
+
 ### Implementing
 ```html
 <div
@@ -39,11 +63,16 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 <ng-template #prevTemplate>
   <img src="prev.png" />
 </ng-template>
+
 <ng-template #nextTemplate>
   <img src="next.png" />
 </ng-template>
-<ng-template let-item let-i="index" #itemTemplate>
-  <div style="min-width: 200px">{{i}}. {{item.name}}</div>
+
+<ng-template let-item let-i="index" let-selectedIndex="selectedIndex" #itemTemplate>
+  <div style="min-width: 200px">
+    <b *ngIf="i === selectedIndex">{{i}}. {{item.name}}</b>
+    <span *ngIf="i !== selectedIndex">{{i}}. {{item.name}}</span>
+  </div>
 </ng-template>
 ```
 
