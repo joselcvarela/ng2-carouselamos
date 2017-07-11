@@ -43,7 +43,7 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
   <img src="next.png" />
 </ng-template>
 <ng-template let-item let-i="index" #itemTemplate>
-  {{i}}. {{item.name}}
+  <div style="min-width: 200px">{{i}}. {{item.name}}</div>
 </ng-template>
 ```
 
