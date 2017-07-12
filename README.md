@@ -38,15 +38,14 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 
   ```$next``` - template for next button
 
+  ```onSelectedItem($event)``` - event triggered when snap element. $event is an object containing the current item and the current index - { item: ..., index: ... }
+
 
   Inside ```$item``` template we have access to the follow:
 
   * ```let-item``` - the current element of the objects array
 
-  * ```let-i="index"``` - current index
-
-  * ```let-selected="selectedIndex"``` - current selected index (corresponds to the index of first visible element of the window)
-  
+  * ```let-i="index"``` - current index  
 
 
 ### Implementing
@@ -58,7 +57,12 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
   [$item]="itemTemplate"
   [$prev]="prevTemplate"
   [$next]="nextTemplate"
+  (onSelectedItem)="selectedItem = $event.item; selectedIndex = $event.index"
 ></div>
+
+<div>
+  Current item selected
+</div>
 
 <ng-template #prevTemplate>
   <img src="prev.png" />
@@ -68,7 +72,7 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
   <img src="next.png" />
 </ng-template>
 
-<ng-template let-item let-i="index" let-selectedIndex="selectedIndex" #itemTemplate>
+<ng-template let-item let-i="index" #itemTemplate>
   <div style="min-width: 200px">
     <b *ngIf="i === selectedIndex">{{i}}. {{item.name}}</b>
     <span *ngIf="i !== selectedIndex">{{i}}. {{item.name}}</span>

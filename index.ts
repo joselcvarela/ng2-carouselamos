@@ -3,6 +3,8 @@ import {
   NgModule,
   Component,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import isEqual from 'lodash.isequal';
 
@@ -58,7 +60,7 @@ import isEqual from 'lodash.isequal';
           (mousemove)="onMousemove($event, list.scrollWidth)"
           (touchmove)="onTouchmove($event, list.scrollWidth)"
           (mouseup)="onMouseup($event, list)"
-          (mouseleave)="onMouseup($event)"
+          (mouseleave)="onMouseup($event, list)"
           (touchend)="onTouchup($event, list)"
         >
           <div
@@ -102,6 +104,7 @@ export class Ng2Carouselamos {
   @Input() $prev;
   @Input() $next;
   @Input() $item;
+  @Output() onSelectedItem: EventEmitter<any> = new EventEmitter();
   childIndex: number = 0;
   amount: number = 0;
   startPress: number = 0;
@@ -156,6 +159,7 @@ export class Ng2Carouselamos {
       if (this.amount <= lastVal && this.amount >= -counter ){
         this.amount = -lastVal;
         this.childIndex = i;
+        this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex });
         return;
       }
       lastVal = counter;
@@ -165,6 +169,7 @@ export class Ng2Carouselamos {
 
   scroll(forward, elem) {
     this.childIndex += forward ? 1 : -1;
+    this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex });
     this.amount = -(this.calcScroll(elem));
   }
 
