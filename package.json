@@ -1,6 +1,6 @@
 {
   "name": "ng2-carouselamos",
-  "version": "2.4.3",
+  "version": "2.5.0",
   "description": "This is a simple slider/carousel for angular 2",
   "main": "index.ts",
   "scripts": {
