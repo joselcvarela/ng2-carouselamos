@@ -79,7 +79,7 @@ import isEqual from 'lodash.isequal';
             ></ng-template>
           </div>
         </div>
-        <div class="controls" *ngIf="$prev || $next">
+        <div class="controls" *ngIf="list.scrollWidth > width && ($prev || $next)">
           <button *ngIf="$prev" (click)="scroll(false, list)" [disabled]="amount >= 0">
             <ng-template [ngTemplateOutlet]="$prev"></ng-template>
           </button>
