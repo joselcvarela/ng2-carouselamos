@@ -45,7 +45,7 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 
   * ```let-item``` - the current element of the objects array
 
-  * ```let-i="index"``` - current index  
+  * ```let-i="index"``` - current index
 
 
 ### Implementing
@@ -80,3 +80,4 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 </ng-template>
 ```
 
+Based on https://github.com/trekhleb/angular-library-seed
