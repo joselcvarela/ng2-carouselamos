@@ -1,0 +1,38 @@
+.ng2-carouselamos-container {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.ng2-carouselamos-wrapper {
+  overflow: hidden;
+}
+.ng2-carouselamos {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  transition: transform 1s, -webkit-transform 1s;
+}
+.controls {
+  pointer-events: none;
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.controls button{
+  pointer-events: all;
+  background: transparent;
+  border: 0;
+}
