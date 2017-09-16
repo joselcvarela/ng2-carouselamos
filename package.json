@@ -43,6 +43,7 @@
     "build:umd:watch": "npm run build:umd -- --watch",
     "build:watch": "concurrently --raw \"npm run build:umd:watch\" \"npm run build:esm:watch\"",
     "ci": "npm run lint && npm run test && npm run build && npm run docs",
+    "ci": "npm run build",
     "clean:all": "npm run clean:tmp && rimraf node_modules",
     "clean:tmp": "rimraf coverage dist tmp docs",
     "codecov": "cat coverage/lcov.info | codecov",
