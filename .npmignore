@@ -1,28 +1,8 @@
-# Node
-node_modules
-npm-debug.log
+#Ignore all except needed files
+*
 
-# Yarn
-yarn-error.log
+# Do not ignore typings
+!typings/**
 
-# JetBrains
-.idea/
-
-# VS Code
-.vscode/
-
-# Windows
-Thumbs.db
-Desktop.ini
-
-# Mac
-.DS_Store
-
-# Temporary files
-coverage/
-demo/
-docs
-tmp
-
-# Library files
-src/
+# Do not ignore dist files
+!dist/**
