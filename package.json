@@ -19,7 +19,9 @@
     "aot-compatible",
     "aot-compilation",
     "library",
-    "ng"
+    "ng",
+    "ng4",
+    "ngx"
   ],
   "author": {
     "name": "José Varela",
