@@ -83,7 +83,7 @@ export class Ng2Carouselamos {
       if (this.amount <= lastVal && this.amount >= -counter) {
         this.amount = -lastVal;
         this.childIndex = i;
-        this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex });
+        this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex, first: false });
         return;
       }
       lastVal = counter;
@@ -93,7 +93,7 @@ export class Ng2Carouselamos {
 
   scroll(forward: boolean, elem: any) {
     this.childIndex += forward ? 1 : -1;
-    this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex });
+    this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex, first: false });
     this.amount = -(this.calcScroll(elem));
   }
 
@@ -109,6 +109,9 @@ export class Ng2Carouselamos {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.items && !isEqual(changes.items.previousValue, changes.items.currentValue)) {
+      if (changes.items.firstChange) {
+        this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex, first: true });
+      }
       this.amount = 0;
     }
   }
