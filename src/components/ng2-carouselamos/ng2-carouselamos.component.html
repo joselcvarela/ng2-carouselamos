@@ -31,6 +31,7 @@
     *ngIf="$prev || $next"
   >
     <button
+      type="button"
       *ngIf="$prev"
       (click)="scroll(false, list)"
       [disabled]="amount >= 0"
@@ -40,6 +41,7 @@
       ></ng-template>
     </button>
     <button
+      type="button"
       *ngIf="$next"
       (click)="scroll(true, list)"
       [disabled]="amount <= -(list.scrollWidth-width)"
