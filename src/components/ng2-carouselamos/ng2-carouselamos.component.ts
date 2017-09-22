@@ -9,6 +9,12 @@ import {
 } from '@angular/core';
 const isEqual = require('lodash.isequal')
 
+export interface SelectedItemInterface {
+  item: any,
+  index: number,
+  first: boolean
+}
+
 @Component({
   selector: '[ng2-carouselamos]',
   styleUrls: ['./ng2-carouselamos.scss'],
@@ -28,7 +34,7 @@ export class Ng2Carouselamos {
   @Input() $prev: TemplateRef<any>;
   @Input() $next: TemplateRef<any>;
   @Input() $item: TemplateRef<any>;
-  @Output() onSelectedItem: EventEmitter<any> = new EventEmitter();
+  @Output() onSelectedItem: EventEmitter<SelectedItemInterface> = new EventEmitter();
   childIndex: number = 0;
   amount: number = 0;
   startPress: number = 0;
