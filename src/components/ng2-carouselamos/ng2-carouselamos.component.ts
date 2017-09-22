@@ -9,6 +9,10 @@ import {
 } from '@angular/core';
 const isEqual = require('lodash.isequal')
 
+export interface OptionsInterface {
+  resetToFirst: boolean
+}
+
 @Component({
   selector: '[ng2-carouselamos]',
   styleUrls: ['./ng2-carouselamos.scss'],
@@ -28,6 +32,9 @@ export class Ng2Carouselamos {
   @Input() $prev: TemplateRef<any>;
   @Input() $next: TemplateRef<any>;
   @Input() $item: TemplateRef<any>;
+  @Input() options: OptionsInterface = {
+    resetToFirst: false
+  }
   @Output() onSelectedItem: EventEmitter<any> = new EventEmitter();
   childIndex: number = 0;
   amount: number = 0;
@@ -93,6 +100,13 @@ export class Ng2Carouselamos {
 
   scroll(forward: boolean, elem: any) {
     this.childIndex += forward ? 1 : -1;
+    if (this.options.resetToFirst) {
+      if (this.childIndex > this.items.length - 1) {
+        this.childIndex = 0;
+      } else if (this.childIndex < 0) {
+        this.childIndex = this.items.length - 1;
+      }
+    }
     this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex });
     this.amount = -(this.calcScroll(elem));
   }

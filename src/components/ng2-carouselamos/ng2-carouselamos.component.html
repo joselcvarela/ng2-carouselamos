@@ -33,7 +33,8 @@
     <button
       *ngIf="$prev"
       (click)="scroll(false, list)"
-      [disabled]="amount >= 0"
+      [ngClass]="{'hide-controls': this.options.resetToFirst ? false : (amount >= 0) }"
+      [disabled]="this.options.resetToFirst ? false : (amount >= 0)"
     >
       <ng-template
         [ngTemplateOutlet]="$prev"
@@ -42,7 +43,8 @@
     <button
       *ngIf="$next"
       (click)="scroll(true, list)"
-      [disabled]="amount <= -(list.scrollWidth-width)"
+      [ngClass]="{'hide-controls': this.options.resetToFirst ? false : (amount <=- (list.scrollWidth-width)) }"
+      [disabled]="this.options.resetToFirst ? false : (amount <= -(list.scrollWidth-width))"
     >
         <ng-template
           [ngTemplateOutlet]="$next"
