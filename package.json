@@ -1,6 +1,6 @@
 {
   "name": "ng2-carouselamos",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "This is a simple slider/carousel for angular 2+",
   "main": "./dist/index.umd.js",
   "module": "./dist/index.js",
@@ -42,7 +42,6 @@
     "build:umd": "webpack --config webpack-umd.config.ts",
     "build:umd:watch": "npm run build:umd -- --watch",
     "build:watch": "concurrently --raw \"npm run build:umd:watch\" \"npm run build:esm:watch\"",
-    "ci": "npm run lint && npm run test && npm run build && npm run docs",
     "ci": "npm run build",
     "clean:all": "npm run clean:tmp && rimraf node_modules",
     "clean:tmp": "rimraf coverage dist tmp docs",
