@@ -33,30 +33,58 @@ export class Ng2Carouselamos {
   amount: number = 0;
   startPress: number = 0;
   lastX: number = 0;
+  thresholdEnd: number = -1;
 
-  onMousedown(e: MouseEvent) {
+  calcThresholdEnd(children: Array<any>) {
+    let temp = 0;
+    let aux = 0;
+    for (let i = 0; i < children.length - 1; i++) {
+      if (aux >= this.width) {
+        this.thresholdEnd = temp
+        return;
+      }
+      temp = aux;
+      const el = children[i];
+      const style = el.currentStyle || window.getComputedStyle(el);
+      aux += el.offsetWidth + (parseFloat(style.marginLeft) + parseFloat(style.marginRight));
+    }
+  }
+
+  onMousedown(e: MouseEvent, elem: any) {
     if (e.which === 1) {
       this.startPress = e.clientX;
       this.lastX = this.amount;
+      if (this.thresholdEnd === -1) {
+        this.calcThresholdEnd(elem.children);
+      }
     }
   }
-  onTouchdown(e: TouchEvent) {
+  onTouchdown(e: TouchEvent, elem: any) {
     if (navigator.userAgent.indexOf('Android') >= 0) e.preventDefault();
     this.startPress = e.targetTouches[0].clientX;
     this.lastX = this.amount;
+    if (this.thresholdEnd === -1) {
+      this.calcThresholdEnd(elem.children);
+    }
   }
 
-  onMousemove(e: MouseEvent, maxWidth: number) {
+  onMousemove(e: MouseEvent, elem: any) {
     if (e.which === 1) {
+      const maxWidth = elem.scrollWidth
       const amount = this.lastX - (this.startPress - e.clientX);
-      if (amount > 0 || amount < -(maxWidth - this.width)) return;
+      if (amount > 0 || amount + this.thresholdEnd < -(maxWidth - this.width)) {
+        return;
+      }
       this.amount = amount;
     }
   }
-  onTouchmove(e: TouchEvent, maxWidth: number) {
+  onTouchmove(e: TouchEvent, elem: any) {
     if (navigator.userAgent.indexOf('Android') >= 0) e.preventDefault();
+    const maxWidth = elem.scrollWidth
     const amount = this.lastX - (this.startPress - e.targetTouches[0].clientX);
-    if (amount > 0 || amount < -(maxWidth - this.width)) return;
+    if (amount > 0 || amount + this.thresholdEnd < -(maxWidth - this.width)) {
+      return;
+    }
     this.amount = amount;
   }
 
