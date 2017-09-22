@@ -80,7 +80,7 @@ export class Ng2Carouselamos {
       const el = elem.children[i];
       const style = el.currentStyle || window.getComputedStyle(el);
       counter += el.offsetWidth + (parseFloat(style.marginLeft) + parseFloat(style.marginRight));
-      if (this.amount <= lastVal && this.amount >= -counter) {
+      if (this.amount <= lastVal && this.amount > -counter) {
         this.amount = -lastVal;
         this.childIndex = i;
         this.onSelectedItem.emit({ item: this.items[this.childIndex], index: this.childIndex });
