@@ -29,6 +29,9 @@ import { Component, OnInit } from '@angular/core';
       justify-content: center;
       align-items: center;
     }
+    :host ::ng-deep .hide-controls {
+      visibility: hidden;
+    }
   </style>
 
   <div class="container">
@@ -41,6 +44,7 @@ import { Component, OnInit } from '@angular/core';
       [$item]="itemTemplate"
       [$prev]="prevTemplate"
       [$next]="nextTemplate"
+      [options]="{ resetToFirst: true }"
       (onSelectedItem)="selectedItem = $event.item; selectedIdx = $event.index"
       class="wrapper"
     >
