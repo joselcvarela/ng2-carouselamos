@@ -1,3 +1,5 @@
+**NOTE:** This project is no longer maintained.
+
 # Ng2Carouselamos
 
 Ng2-carouselamos is a simple carousel/slider which just use css transitions to do the work
