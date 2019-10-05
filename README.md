@@ -1,4 +1,4 @@
-**NOTE:** This project is no longer maintained.
+**NOTE:** ~~This project is no longer maintained.~~ I am bringing a new life to this project :D
 
 # Ng2Carouselamos
 
