@@ -1,0 +1,40 @@
+{
+  "name": "ng2-carouselamos",
+  "version": "4.0.0",
+  "description": "This is a simple slider/carousel for angular 2+",
+  "license": "MIT",
+  "keywords": [
+    "slider",
+    "carousel",
+    "angular2",
+    "angular",
+    "2",
+    "ng2",
+    "carouselamos",
+    "angular4",
+    "aot",
+    "aot-compatible",
+    "aot-compilation",
+    "library",
+    "ng",
+    "ng4",
+    "ngx"
+  ],
+  "author": {
+    "name": "José Varela",
+    "url": "https://www.github.com/joselcvarela/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/joselcvarela/ng2-carouselamos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joselcvarela/ng2-carouselamos/issues"
+  },
+  "homepage": "https://github.com/joselcvarela/ng2-carouselamos#readme",
+  "peerDependencies": {
+    "@angular/common": "^8.2.9",
+    "@angular/core": "^8.2.9",
+    "lodash.isequal": "^4.5.0"
+  }
+}

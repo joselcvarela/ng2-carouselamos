@@ -1,0 +1,33 @@
+<div class="container">
+  <h1>ng2-carouselamos</h1>
+
+  <div
+    ng2-carouselamos
+    [width]="500"
+    [items]="listOfItems"
+    [$item]="itemTemplate"
+    [$prev]="prevTemplate"
+    [$next]="nextTemplate"
+    (onSelectedItem)="selectedItem = $event.item; selectedIndex = $event.index"
+  ></div>
+
+  <div>
+    Current item selected
+    {{ selectedIndex }}
+  </div>
+
+  <ng-template #prevTemplate>
+    <button class="controls">Previous</button>
+  </ng-template>
+
+  <ng-template #nextTemplate>
+    <button class="controls">Next</button>
+  </ng-template>
+
+  <ng-template let-item let-i="index" #itemTemplate>
+    <div class="item">
+      <img [src]="item" alt="" />
+      <span class="description">Simple image</span>
+    </div>
+  </ng-template>
+</div>
