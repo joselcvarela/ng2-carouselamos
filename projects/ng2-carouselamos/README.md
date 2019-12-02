@@ -1,9 +1,3 @@
-**NOTE:**
-
-~~This project is no longer maintained.~~
-
-This projects is active again :D
-
 # Ng2Carouselamos
 
 Ng2-carouselamos is a simple carousel/slider which just use css transitions to do the work
@@ -38,6 +32,8 @@ import { Ng2CarouselamosModule } from 'ng2-carouselamos';
 ### Documentation
 
 `ng2-carouselamos` - attribute to apply carousel
+
+`startAt` - initial slide to render. Defaults to 0.
 
 `width` - size of window to show
 

@@ -4,7 +4,10 @@ import {
   Output,
   EventEmitter,
   TemplateRef,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
 } from "@angular/core";
 import isEqual from "lodash.isequal";
 
@@ -21,25 +24,42 @@ export interface SelectedItemInterface {
 })
 /*
  *
+ * @param() startAt - index of slide to render first. Default to 0.
  * @param() items - List of items to belong in carousel
  * @param() width - Size of window(view) to show
  * @param() $prev - Template for previous button
  * @param() $next - Template for next button
  * @param() $item - Template for the item
  */
-export class Ng2CarouselamosComponent {
-  @Input() items: Array<any> = [];
-  @Input() width: number = 500;
-  @Input() $prev: TemplateRef<any>;
-  @Input() $next: TemplateRef<any>;
-  @Input() $item: TemplateRef<any>;
-  @Output() onSelectedItem: EventEmitter<
-    SelectedItemInterface
-  > = new EventEmitter();
+export class Ng2CarouselamosComponent implements AfterViewInit {
   childIndex: number = 0;
   amount: number = 0;
   startPress: number = 0;
   lastX: number = 0;
+
+  @Input()
+  startAt = 0;
+
+  @Input()
+  items: Array<any> = [];
+
+  @Input()
+  width: number = 500;
+
+  @Input()
+  $prev: TemplateRef<any>;
+
+  @Input()
+  $next: TemplateRef<any>;
+
+  @Input()
+  $item: TemplateRef<any>;
+
+  @Output()
+  onSelectedItem: EventEmitter<SelectedItemInterface> = new EventEmitter();
+
+  @ViewChild("list", { static: true })
+  list: ElementRef;
 
   onMousedown(e: MouseEvent) {
     if (e.which === 1) {
@@ -104,8 +124,8 @@ export class Ng2CarouselamosComponent {
     return counter;
   }
 
-  scroll(forward: boolean, elem: any) {
-    this.childIndex += forward ? 1 : -1;
+  scroll(forward: boolean, elem: any, qty = 1) {
+    this.childIndex += forward ? qty : -qty;
     this.onSelectedItem.emit({
       item: this.items[this.childIndex],
       index: this.childIndex,
@@ -140,5 +160,11 @@ export class Ng2CarouselamosComponent {
       }
       this.amount = 0;
     }
+  }
+
+  ngAfterViewInit() {
+    this.startPress = 1;
+    this.scroll(true, this.list.nativeElement, this.startAt);
+    setTimeout(() => (this.startPress = 0));
   }
 }
